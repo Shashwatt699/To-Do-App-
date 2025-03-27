@@ -3,7 +3,7 @@ export const login = async (credentials) => {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Mock validation - in real app, this would call your backend
+    // Mock validation - In a full stack project a backend call would have been here
     if (credentials.username === 'user' && credentials.password === 'password') {
       return { 
         success: true,
@@ -23,7 +23,7 @@ export const login = async (credentials) => {
     return { success: true };
   };
   
-  // Check if user is authenticated (for persistent sessions)
+  // Check if user is authenticated (for continous sessions)
   export const checkAuth = () => {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     return {

@@ -1,9 +1,8 @@
-// src/redux/slices/authSlice.js
 import { createSlice } from '@reduxjs/toolkit'
-import { login as authLogin, logout as authLogout, checkAuth } from '../../services/authService'
 
 const initialState = {
-  ...checkAuth(),
+  isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+  user: null,
   loading: false,
   error: null
 }
@@ -12,66 +11,50 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginStart: (state) => {
-      state.loading = true
-      state.error = null
-    },
     loginSuccess: (state, action) => {
-      state.loading = false
       state.isAuthenticated = true
       state.user = action.payload
       state.error = null
-    },
-    loginFailure: (state, action) => {
-      state.loading = false
-      state.error = action.payload
     },
     logoutSuccess: (state) => {
       state.isAuthenticated = false
       state.user = null
     },
-    clearError: (state) => {
-      state.error = null
+    setLoading: (state, action) => {
+      state.loading = action.payload
+    },
+    setError: (state, action) => {
+      state.error = action.payload
     }
   }
 })
 
-// Export the plain action creators
-export const { 
-  loginStart, 
-  loginSuccess, 
-  loginFailure, 
-  logoutSuccess, 
-  clearError 
-} = authSlice.actions
+// Action creators
+export const { loginSuccess, logoutSuccess, setLoading, setError } = authSlice.actions
 
-// Export async thunks
+// Thunk actions
 export const login = (credentials) => async (dispatch) => {
-  dispatch(loginStart())
+  dispatch(setLoading(true))
   try {
-    const result = await authLogin(credentials)
-    if (result.success) {
-      dispatch(loginSuccess(result.user))
+    // Mock authentication
+    if (credentials.username === 'user' && credentials.password === 'password') {
       localStorage.setItem('isAuthenticated', 'true')
+      dispatch(loginSuccess({ username: credentials.username }))
       return true
-    } else {
-      dispatch(loginFailure(result.error))
-      return false
     }
-  } catch (error) {
-    dispatch(loginFailure(error.message))
+    dispatch(setError('Invalid credentials'))
     return false
+  } catch (error) {
+    dispatch(setError(error.message))
+    return false
+  } finally {
+    dispatch(setLoading(false))
   }
 }
 
 export const logout = () => async (dispatch) => {
-  try {
-    await authLogout()
-    dispatch(logoutSuccess())
-    localStorage.removeItem('isAuthenticated')
-  } catch (error) {
-    console.error('Logout failed:', error)
-  }
+  localStorage.removeItem('isAuthenticated')
+  dispatch(logoutSuccess())
 }
 
 export default authSlice.reducer

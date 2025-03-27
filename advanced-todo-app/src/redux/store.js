@@ -3,12 +3,10 @@ import authReducer from './slices/authSlice'
 import tasksReducer from './slices/tasksSlice'
 import weatherReducer from './slices/weatherSlice'
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     auth: authReducer,
     tasks: tasksReducer,
-    weather: weatherReducer,
-  },
+    weather: weatherReducer 
+  }
 })
-
-export default store

@@ -1,25 +1,25 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getWeatherForLocation } from '../redux/slices/weatherSlice';
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchWeather } from '../redux/slices/weatherSlice'
 
 export const useWeather = (location) => {
-  const dispatch = useDispatch();
-  const weatherData = useSelector((state) => 
-    location ? state.weather.data[location] : null
-  );
-  const loading = useSelector((state) => state.weather.loading);
-  const error = useSelector((state) => state.weather.error);
+  const dispatch = useDispatch()
+  const weatherState = useSelector(state => state.weather)
+  
+  const weather = location ? weatherState.data[location] : null
+  const loading = weatherState.loading
+  const error = weatherState.error
 
   useEffect(() => {
     if (location) {
-      dispatch(getWeatherForLocation(location));
+      dispatch(fetchWeather(location))
     }
-  }, [location, dispatch]);
+  }, [location, dispatch])
 
   return {
-    weather: weatherData,
+    weather,
     loading,
     error,
-    refresh: () => location && dispatch(getWeatherForLocation(location))
-  };
-};
+    refresh: () => dispatch(fetchWeather(location))
+  }
+}

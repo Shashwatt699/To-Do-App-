@@ -1,20 +1,20 @@
-import { useWeather } from '../hooks/useWeather';
+import { useWeather } from '../hooks/useWeather'
 
 const WeatherInfo = ({ location }) => {
-  const { weather, loading, error } = useWeather(location);
+  const { weather, loading, error } = useWeather(location)
 
-  if (!location) return null;
+  if (!location) return null
 
   if (error) {
     return (
       <div className="text-red-500 text-xs mt-1">
         Weather: {error.includes('401') ? 'API Error - Check API Key' : error}
       </div>
-    );
+    )
   }
 
   if (loading || !weather) {
-    return <div className="text-xs mt-1">Loading weather...</div>;
+    return <div className="text-xs mt-1">Loading weather...</div>
   }
 
   return (
@@ -30,7 +30,7 @@ const WeatherInfo = ({ location }) => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default WeatherInfo;
+export default WeatherInfo

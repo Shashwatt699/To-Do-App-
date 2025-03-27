@@ -1,1 +1,18 @@
-This is a Todo-list Project which has Wheather API Integration
+To-Do App with Weather & Authentication
+
+A responsive React To-Do app featuring:  
+- Redux state management  
+- User authentication (login/logout)  
+- Weather API integration for location-based tasks  
+- Priority-based task sorting  
+- LocalStorage persistence  
+- Tailwind CSS styling  
+
+Tech Stack: React, Redux, React Router, Tailwind CSS, OpenWeather API  
+
+Setup: `npm install` then `npm run dev`  
+
+TO LOGIN IN THE APP USE BELOW CREDENTIALS
+
+Username = user
+Password = password
